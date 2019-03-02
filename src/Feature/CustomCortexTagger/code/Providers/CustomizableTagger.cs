@@ -24,26 +24,27 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         public void TagContent(Item contentItem, IEnumerable<Tag> tags)
         {
-            var tagsFieldId = _settingsService.GetCustomTaggerSettingModel().TagsFieldTarget;
+            var tagsFieldId = _settingsService.GetCustomTaggerSettingModel(contentItem).TagsFieldTarget;
             if (tagsFieldId == Guid.Empty)
             {
                 Log.Warn("CustomTagger: Tags field name not defined in settings", this);
                 return;
             }
 
-            var tagsField = (MultilistField)contentItem.Fields[new ID(tagsFieldId)];
-            if (tagsField == null)
+            var tagsField = contentItem.Fields[new ID(tagsFieldId)];
+            if (tagsField == null || string.IsNullOrEmpty(tagsField.Type))
             {
                 Log.Warn($"CustomTagger: Field {tagsFieldId} not found or wrong type in item {contentItem.ID}", this);
                 return;
             }
 
+            var tagsEditField = (MultilistField)tagsField;
             contentItem.Editing.BeginEdit();
             foreach (var tag in tags)
             {
-                if (ID.TryParse(tag.ID, out ID id) && !tagsField.TargetIDs.Contains(id))
+                if (ID.TryParse(tag.ID, out ID id) && !tagsEditField.TargetIDs.Contains(id))
                 {
-                    tagsField.Add(tag.ID);
+                    tagsEditField.Add(tag.ID);
                 }
             }
             contentItem.Editing.EndEdit();

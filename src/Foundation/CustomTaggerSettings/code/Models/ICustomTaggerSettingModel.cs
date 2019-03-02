@@ -11,5 +11,7 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Models
         Guid TagEntryValueField { get; }
 
         Guid TagsFieldTarget { get; }
+
+        Guid TagCategoryTemplate { get; }
     }
 }

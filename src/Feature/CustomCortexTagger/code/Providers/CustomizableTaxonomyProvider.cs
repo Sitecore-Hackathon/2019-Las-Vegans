@@ -35,36 +35,43 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         public IEnumerable<Tag> CreateTags(Item contentItem, IEnumerable<TagData> tagData)
         {
-
             var tagsCategories = tagData.SelectMany(x => x.Properties.Where(y => y.Key == "_typeGroup" && y.Value != null).Select(z => z.Value as string).Distinct());
             
             if (tagsCategories == null || !tagsCategories.Any())
             {
                 Sitecore.Diagnostics.Log.Warn($"CustomizableTaxonomyProvider: Tags categories are null or empty", this);
-                return null;
+                return new List<Tag>();
             }
 
-            var tagsSettingsModel = _tagsSettingService.GetCustomTaggerSettingModel();
+            var tagsSettingsModel = _tagsSettingService.GetCustomTaggerSettingModel(contentItem);
+
+
+            var categoryTemplate = new TemplateItem(Database.GetItem(new ID(tagsSettingsModel.TagCategoryTemplate)));
+            if (categoryTemplate == null)
+            {
+                Sitecore.Diagnostics.Log.Warn($"CustomizableTaxonomyProvider: category template item with ID {tagsSettingsModel.TagCategoryTemplate} for tags not found", this);
+                return new List<Tag>();
+            }
 
             var template = new TemplateItem(Database.GetItem(new ID(tagsSettingsModel.TagEntryTemplate)));
             if (template == null)
             {
                 Sitecore.Diagnostics.Log.Warn($"CustomizableTaxonomyProvider: template item with ID {tagsSettingsModel.TagEntryTemplate} for tags not found", this);
-                return null;
+                return new List<Tag>();
             }
 
             var tagsRepositoryRootItem = Database.GetItem(new ID(tagsSettingsModel.TagsCollectionRootItem));
             if (tagsRepositoryRootItem == null)
             {
                 Sitecore.Diagnostics.Log.Warn($"CustomizableTaxonomyProvider: tags root item with ID {tagsSettingsModel.TagsCollectionRootItem} not found", this);
-                return null;
+                return new List<Tag>();
             }
 
             var tagFieldEntry = new ID(tagsSettingsModel.TagEntryValueField);
             if (tagFieldEntry == ID.Null || tagFieldEntry == ID.Undefined)
             {
                 Sitecore.Diagnostics.Log.Warn($"CustomizableTaxonomyProvider: tag field with ID {tagsSettingsModel.TagsCollectionRootItem} not found", this);
-                return null;
+                return new List<Tag>();
             }
 
             if (template.Fields.Select(x => x.ID).Contains(tagFieldEntry))
@@ -75,7 +82,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                     var tagsForCategory = tagData.Distinct(new TagNameComparer())
                         .Where(x => x.Properties.Any(p => p.Key == "_typeGroup" && p.Value != null && p.Value as string == tagCategory));
                     
-                    var categoryItem = PrepareNewCategory(tagCategory, tagsRepositoryRootItem);
+                    var categoryItem = PrepareNewCategory(tagCategory, tagsRepositoryRootItem, categoryTemplate);
 
                     foreach (var data in tagsForCategory)
                     {
@@ -96,32 +103,37 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
             else
             {
                 Sitecore.Diagnostics.Log.Warn($"CustomTagger: template {tagsSettingsModel.TagEntryTemplate} doesn't contain field with ID {tagsSettingsModel.TagsCollectionRootItem}", this);
-                return null;
+                return new List<Tag>();
             }
         }
 
-        private Item PrepareNewCategory(string categoryName, Item tagsRepositoryRootItem)
+        private Item PrepareNewCategory(string categoryName, Item tagsRepositoryRootItem, TemplateItem categoryTemplate)
         {
             var existingCategory = GetCategory(categoryName);
-            if (existingCategory == (ID)null)
+            if (existingCategory != (ID)null)
             {
-                return null;
+
+
+                var newCategory = CreateCategory(categoryName, tagsRepositoryRootItem, categoryTemplate);
+
+                if (newCategory != (ID)null)
+                {
+                    var categoryItem = Database.GetItem(newCategory);
+                    return categoryItem;
+                }
             }
 
-            var newCategory = CreateCategory(categoryName, tagsRepositoryRootItem);
-            var categoryItem = Database.GetItem(newCategory);
-
-            return categoryItem;
+            return null;
         }
 
 
-        protected virtual ID CreateCategory(string categoryName, Item tagsRepositoryRootItem)
+        protected virtual ID CreateCategory(string categoryName, Item tagsRepositoryRootItem, TemplateItem categoryTemplate)
         {
             if (!string.IsNullOrWhiteSpace(categoryName))
             {
                 using (new SecurityDisabler())
                 {
-                    var categoryItem = tagsRepositoryRootItem.Add(categoryName, template);
+                    var categoryItem = tagsRepositoryRootItem.Add(categoryName, categoryTemplate);
 
                     categoryItem.Editing.BeginEdit();
                     categoryItem.Fields[Sitecore.FieldIDs.DisplayName].Value = categoryName;
@@ -130,6 +142,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                     return categoryItem.ID;
                 }
             }
+            return null;
         }
 
         public ID GetCategory(string categoryName)

@@ -19,6 +19,9 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Models
         private readonly ID _tagsFieldTargetFieldId = new ID("{55DD19B5-9143-4CA1-9ABB-AA4826F60031}");
         private readonly Guid _tagsFieldTarget;
 
+        private readonly ID _tagCategoryTemplateFieldId = new ID("{FBA071CF-5C10-4E4B-9AC1-F57F7E63F2AB}");
+        private readonly Guid _tagCategoryTemplate;
+
         public Guid TagsCollectionRootItem => this._tagsCollectionRootItem;
 
         public Guid TagEntryTemplate => this._tagEntryTemplate;
@@ -26,6 +29,8 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Models
         public Guid TagEntryValueField => this._tagEntryValueField;
 
         public Guid TagsFieldTarget => this._tagsFieldTarget;
+
+        public Guid TagCategoryTemplate => this._tagCategoryTemplate;
 
         public CustomTaggerSettingModel(Item customTaggerSettingsItem)
         {
@@ -35,11 +40,13 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Models
             var tagEntryTemplateField = customTaggerSettingsItem.Fields[this._tagEntryTemplateFieldId]?.GetValue(true);
             var tagEntryValueFieldField = customTaggerSettingsItem.Fields[this._tagEntryValueFieldFieldId]?.GetValue(true);
             var tagsFieldTargetField = customTaggerSettingsItem.Fields[this._tagsFieldTargetFieldId]?.GetValue(true);
+            var tagCategoryTemplateField = customTaggerSettingsItem.Fields[this._tagCategoryTemplateFieldId]?.GetValue(true);
 
             Assert.IsTrue(Guid.TryParse(tagsCollectionRootItemField, out this._tagsCollectionRootItem), "");
             Assert.IsTrue(Guid.TryParse(tagEntryTemplateField, out this._tagEntryTemplate), "");
             Assert.IsTrue(Guid.TryParse(tagEntryValueFieldField, out this._tagEntryValueField), "");
             Assert.IsTrue(Guid.TryParse(tagsFieldTargetField, out this._tagsFieldTarget), "");
+            Guid.TryParse(tagCategoryTemplateField, out this._tagCategoryTemplate);
         }
     }
 }
