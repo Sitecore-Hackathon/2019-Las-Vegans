@@ -46,7 +46,7 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Models
             Assert.IsTrue(Guid.TryParse(tagEntryTemplateField, out this._tagEntryTemplate), "");
             Assert.IsTrue(Guid.TryParse(tagEntryValueFieldField, out this._tagEntryValueField), "");
             Assert.IsTrue(Guid.TryParse(tagsFieldTargetField, out this._tagsFieldTarget), "");
-            Assert.IsTrue(Guid.TryParse(tagCategoryTemplateField, out this._tagCategoryTemplate), "");
+            Guid.TryParse(tagCategoryTemplateField, out this._tagCategoryTemplate);
         }
     }
 }
