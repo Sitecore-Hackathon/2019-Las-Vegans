@@ -1,4 +1,5 @@
 ﻿using LV.Foundation.AI.CustomCortexTagger.Settings.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Sitecore.ContentTagging.Core.Comparers;
 using Sitecore.ContentTagging.Core.Models;
 using Sitecore.ContentTagging.Core.Providers;
@@ -16,11 +17,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 {
     public class CustomizableTaxonomyProvider : ITaxonomyProvider
     {
-        //public string ProviderId => "CustomizableTaxonomyProvider";
-
-        //private const string TagRepositoryId = "{154D56CC-0DE2-43C7-BBC0-A25BD7FFD901}";
-        /// <summary>Tag repository</summary>
-        //protected ITagRepository TagRepository;
+        private readonly ICustomTaggerSettingService _tagsSettingService;
 
         /// <summary>Database</summary>
         protected static Database Database
@@ -40,57 +37,80 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
             }
         }
 
-        public IEnumerable<Tag> CreateTags(IEnumerable<TagData> tagData)
+        public ICustomTaggerSettingService TagsSettingsService
         {
-            List<Tag> tagList = new List<Tag>();
-            foreach (TagData data in tagData.Distinct(new TagNameComparer()))
+            get
             {
-                Tag tag1 = this.GetTag(data.TagName);
-                if (tag1 != null)
-                {
-                    tagList.Add(tag1);
-                }
-                else
-                {
-                    ID tag2 = this.CreateTag(data);
-                    if (!(tag2 == (ID)null))
-                    {
-                        Tag tag3 = new Tag()
-                        {
-                            TagName = data.TagName,
-                            ID = tag2.ToString(),
-                            TaxonomyProviderId = this.ProviderId,
-                            Data = data
-                        };
-                        tagList.Add(tag3);
-                    }
-                }
+                return _tagsSettingService;
             }
-            return tagList;
         }
 
-        protected virtual ID CreateTag(TagData data)
+        public CustomizableTaxonomyProvider()
         {
-            ////var tagRepository = ServiceLocator.ServiceProvider.GetService(ICustomTaggerSettingService);
+            _tagsSettingService = ServiceProviderServiceExtensions.GetService<ICustomTaggerSettingService>(ServiceLocator.ServiceProvider);
+        }
 
-            //TemplateItem template = new TemplateItem(CustomizableTaxonomyProvider.Database.GetItem(BucketConfigurationSettings.TagRepositoryId));
-            //Item obj1 = Sitecore.Context.ContentDatabase.GetItem("{154D56CC-0DE2-43C7-BBC0-A25BD7FFD901}");
-            //if (obj1 == null)
-            //    return (ID)null;
-            //string name = ItemUtil.ProposeValidItemName(this.RemoveDiacritics(data.TagName), "tag");
-            //using (new SecurityDisabler())
-            //{
-            //    Item obj2 = obj1.Add(name, template);
-            //    if (name != data.TagName)
-            //    {
-            //        obj2.Editing.BeginEdit();
-            //        obj2.Fields["__Display Name"].Value = data.TagName;
-            //        obj2.Editing.EndEdit();
-            //    }
-            //    return obj2.ID;
-            //}
+        public IEnumerable<Tag> CreateTags(IEnumerable<TagData> tagData)
+        {
+            var tagsSettingsModel = TagsSettingsService.GetCustomTaggerSettingModel();
 
+            TemplateItem template = new TemplateItem(Database.GetItem(new ID(tagsSettingsModel.TagEntryTemplate)));
+            if (template != null)
+            {
+                Item tagsRepositoryRootItem = Database.GetItem(new ID(tagsSettingsModel.TagsCollectionRootItem));
+                if (tagsRepositoryRootItem == null)
+                {
+                    return null;
+                }
+
+                List<Tag> tagList = new List<Tag>();
+                foreach (TagData data in tagData.Distinct(new TagNameComparer()))
+                {
+                    PrepareNewTag(template, tagsRepositoryRootItem, tagList, data);
+                }
+                return tagList;
+            }
             return null;
+        }
+
+        private void PrepareNewTag(TemplateItem template, Item tagsRepositoryRootItem, List<Tag> tagList, TagData data)
+        {
+            Tag tag1 = this.GetTag(data.TagName);
+            if (tag1 != null)
+            {
+                tagList.Add(tag1);
+            }
+            else
+            {
+                ID tag2 = this.CreateTag(data, template, tagsRepositoryRootItem);
+                if (!(tag2 == (ID)null))
+                {
+                    Tag tag3 = new Tag()
+                    {
+                        TagName = data.TagName,
+                        ID = tag2.ToString(),
+                        TaxonomyProviderId = this.ProviderId,
+                        Data = data
+                    };
+                    tagList.Add(tag3);
+                }
+            }
+        }
+
+        protected virtual ID CreateTag(TagData data, TemplateItem template, Item tagsRepositoryRootItem)
+        {
+            string name = ItemUtil.ProposeValidItemName(this.RemoveDiacritics(data.TagName), "tag");
+            using (new SecurityDisabler())
+            {
+                Item tagItem = tagsRepositoryRootItem.Add(name, template);
+                if (name != data.TagName)
+                {
+                    tagItem.Editing.BeginEdit();
+                    tagItem.Fields["__Display Name"].Value = data.TagName;
+                    tagItem.Editing.EndEdit();
+                }
+                return tagItem.ID;
+            }
         }
 
         public Tag GetTag(string tagId)
