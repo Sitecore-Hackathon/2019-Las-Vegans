@@ -45,7 +45,7 @@ To define different configurations for mutlisite solutions, where e.g. tags are 
 # Sample Configation for SXA
 
 Sitecore SXA has its own Content Tags structure, to configure the module to work with SXA, create `CustomTaggerSettings` with following settings:
-![SXA Config](Documentation/images/sxa-usage.png?raw=true "SXA Config")
+![SXA Config](documentation/images/sxa-usage.png)
 
 # Installation
 
