@@ -21,7 +21,7 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Services
             }
         }
 
-        public ICustomTaggerSettingModel GetCustomTaggerSettingModel(string siteName)
+        public ICustomTaggerSettingModel GetCustomTaggerSettingModel(string siteName = null)
         {
             Item customTaggerSettingsItem = null;
 
