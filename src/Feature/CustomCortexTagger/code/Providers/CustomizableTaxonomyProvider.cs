@@ -35,7 +35,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         public IEnumerable<Tag> CreateTags(Item contentItem, IEnumerable<TagData> tagData)
         {
-            var tagsSettingsModel = _tagsSettingService.GetCustomTaggerSettingModel();
+            var tagsSettingsModel = _tagsSettingService.GetCustomTaggerSettingModel(contentItem);
 
             var template = new TemplateItem(Database.GetItem(new ID(tagsSettingsModel.TagEntryTemplate)));
             if (template == null)
