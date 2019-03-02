@@ -99,6 +99,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CustomTaggerSettingService.cs" />
     <Compile Include="Services\ICustomTaggerSettingService.cs" />
+    <Compile Include="Validator\TemplateIdValidator.cs" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
