@@ -11,7 +11,7 @@
 
 # Customizable Content Tagging
 
-LasVegans team would like to present to you Cusomizable Content Tagging module.
+LasVegans team would like to present to you Customizable Content Tagging module.
 
 [Youtube Presentation Movie](https://www.youtube.com/todo)
 
@@ -23,7 +23,20 @@ TODO
 
 # Multisite Usage
 
-TODO
+By default module uses same the configuration defined in `/sitecore/system/Modules/CustomTaggerSettings` item for all sites.
+
+To define different configurations for mutlisite solutions, where e.g. tags are defined in different root items, add more `CustomTaggerSettings` items and define site to settings mapping in configuration file:
+
+    <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+    <sitecore role:require="Standalone or ContentManagement">
+        <customTagger type="LV.Foundation.AI.CustomCortexTagger.Settings.Models.CustomTaggerSitesMappingsModel, LV.Foundation.AI.CustomCortexTagger.Settings">
+            <sitesMappings hint="raw:AddCustomTaggerSitesMappings">
+                <site name="website1" settingsItemPath="/sitecore/system/Modules/CustomTaggerSettings1"/>
+                <site name="website2" settingsItemPath="/sitecore/system/Modules/CustomTaggerSettings2"/>
+            </sitesMappings>
+        </customTagger>
+    </sitecore>
+    </configuration>
 
 # Installation
 
