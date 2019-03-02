@@ -12,3 +12,6 @@ Languages:
     - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
       Hint: __Created
       Value: 20190302T112111Z
+    - ID: "5a4de458-e557-4de1-b185-fc5ef282e3c8"
+      Hint: TagEntryTemplate
+      Value: "{07E95C3D-2BB4-469D-9D3B-7ADD9731CBD7}"
