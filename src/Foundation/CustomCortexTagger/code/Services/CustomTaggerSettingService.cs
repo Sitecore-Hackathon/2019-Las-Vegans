@@ -1,7 +1,7 @@
-﻿using LV.Foundation.CustomTagger.Models;
+﻿using LV.Foundation.AI.CustomCortexTagger.Settings.Models;
 using LV.Foundation.DependencyInjection;
 
-namespace LV.Foundation.CustomTagger.Services
+namespace LV.Foundation.AI.CustomCortexTagger.Settings.Services
 {
     [Service]
     public class CustomTaggerSettingService

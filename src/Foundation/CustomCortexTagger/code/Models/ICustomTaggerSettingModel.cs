@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LV.Foundation.CustomTagger.Models
+namespace LV.Foundation.AI.CustomCortexTagger.Settings.Models
 {
     public interface ICustomTaggerSettingModel
     {

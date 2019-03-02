@@ -43,9 +43,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.Serialization
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Feature.AI.CustomCortexTagger", "src\Feature\CustomCortexTagger\code\LV.Feature.AI.CustomCortexTagger.csproj", "{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomTagger", "CustomTagger", "{38FA3A42-A257-483E-9F12-CC05BE773CB9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomCortexTagger.Settings", "CustomCortexTagger.Settings", "{38FA3A42-A257-483E-9F12-CC05BE773CB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.CustomTagger", "src\Foundation\CustomTagger\code\LV.Foundation.CustomTagger.csproj", "{62B785A0-1E80-411A-A2B0-536451C2899A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.AI.CustomCortexTagger.Settings", "src\Foundation\CustomCortexTagger\code\LV.Foundation.AI.CustomCortexTagger.Settings.csproj", "{62B785A0-1E80-411A-A2B0-536451C2899A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
