@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Config\Include\Feature\LV.Feature.AI.CustomCortexTagger.config" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -88,10 +89,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\CustomizableTaxonomyProvider.cs" />
     <Compile Include="Providers\CustomizableTagger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Foundation\CustomTaggerSettings\code\LV.Foundation.AI.CustomCortexTagger.Settings.csproj">
+      <Project>{62B785A0-1E80-411A-A2B0-536451C2899A}</Project>
+      <Name>LV.Foundation.AI.CustomCortexTagger.Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Foundation\DependencyInjection\code\LV.Foundation.DependencyInjection.csproj">
+      <Project>{366148b7-2392-4f42-80d6-786b7a3682ae}</Project>
+      <Name>LV.Foundation.DependencyInjection</Name>
       <Project>{62b785a0-1e80-411a-a2b0-536451c2899a}</Project>
       <Name>LV.Foundation.AI.CustomCortexTagger.Settings</Name>
     </ProjectReference>
@@ -99,6 +107,9 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Pipelines\Processors\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,38 +1,60 @@
-![Hackathon Logo](documentation/images/hackathon.png?raw=true "Hackathon Logo")
+# Sitecore Hackathon 2019
 
-# Submission Boilerplate
+## LasVegans Team - Poland
 
-Welcome to Sitecore Hackathon 2019.
+ - Tomasz Juranek
+ - Robert Debowski
+ - Rafal Dolzynski
 
-The Hackathon site can be found at http://www.sitecorehackathon.org/sitecore-hackathon-2019/
-
-The purpose of this repository is to provide a sample which shows how to structure the Hackathon submissions.
+## Category: Best enhancement to the Sitecore Admin (XP) UI for Content Editors & Marketers
 
 
-## Entry Submission Requirements 
+# Customizable Content Tagging
 
-All teams are required to submit the following as part of their entry submission on or before the end of the Hackathon on **Friday March 1st 2019 at 8PM EST**. The modules should be based on [Sitecore 9.1 (Initial Release)](https://dev.sitecore.net/Downloads/Sitecore_Experience_Platform/91/Sitecore_Experience_Platform_91_Initial_Release.aspx).
+LasVegans team would like to present to you Cusomizable Content Tagging module.
 
-**Failure to meet any of the requirements will result in automatic disqualification.** Please reach out to any of the organisers or judges if you require any clarification.
+[Youtube Presentation Movie](https://www.youtube.com/todo)
 
-- Sitecore 9.1 (Initial Release) Module (Module install package)
-   - An installation Sitecore Package (`.zip` or `.update`)
+----------
 
-- Module code in a public Git source repository. We will be judging (amongst other things):
-  - Cleanliness of code
-  - Commenting where necessary
-  - Code Structure
-  - Standard coding standards & naming conventions
+# Basic Usage
 
-- Precise and Clear Installation Instructions document (1 – 2 pages)
-- Module usage documentation on [Readme.md](documentation) file on the Git Repository (2 – 5 pages)
-  - Module Purpose
-  - Module Sitecore Hackathon Category
-  - How does the end user use the Module?
-  - Screenshots, etc.
+TODO
 
-- Create a 2 – 10 minutes video explaining the module’s functionality (A link to youtube video)
+# Multisite Usage
 
-  - What problem was solved
-  - How did you solve it
-  - What is the end result
+TODO
+
+# Installation
+
+To use the module you will need to:
+- Install [Sitecore 9.1 (Initial Release)](https://dev.sitecore.net/Downloads/Sitecore_Experience_Platform/91/Sitecore_Experience_Platform_91_Initial_Release.aspx)
+- Configure content tagging provider. For example for [Open Calais](http://www.opencalais.com/) create new config file in `{sitecore website root}\App_Config\Environment\Sitecore.ContentTagging.OpenCalais.config` with following content:
+                                         
+		   <?xml version="1.0" encoding="utf-8" ?>
+           <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+               <sitecore role:require="Standalone or ContentManagement">
+                   <settings>
+                       <setting name="Sitecore.ContentTagging.OpenCalais.CalaisAccessToken" value="{your-token-value}" />
+                   </settings>
+               </sitecore>
+           </configuration>
+
+- Install [LV.CustomizableTagger.zip](sc.package/LV.CustomizableTagger.zip) package using Sitecore Installation Wizard.
+
+## Manual Installation/Install from Source
+
+* Clone repository.
+* Update `publishUrl` to your Sitecore instance URL in `publishsettings.targets` file.
+* Update path in `sourceFolderCustomTagger` variable to your local repository folder in `zz.LV.Foundation.Serialization.Settings.config` file.
+* Publish `LV.Feature.AI.CustomCortexTagger` and `LV.Foundation.AI.CustomCortexTagger.Settings` projects from Visual Studio.
+* Publish `LV.Foundation.Serialization` project. This project contains Unicorn assemblies and configuration. If you already have Unicorn in your project you can deploy only `zz.LV.Foundation.Serialization.Settings.config` file.  
+* Go to http://your-sitecore-instance/unicorn.aspx and sync `Foundation.CustomTaggerSettings` project.
+
+### Test Website Deployment
+
+Source code contains sample website, which can be used to test functionality of the module. To install it:
+* Follow the steps for manual installation of the module
+* Publish `LV.Project.SamplePageTags` project form Visual Studio.
+* Go to http://your-sitecore-instance/unicorn.aspx and sync `Project.SamplePageTags` project.
+* Test pages are installed under `/sitecore/content/SampleTagsHome` and `/sitecore/content/SampleTagsData` items.
