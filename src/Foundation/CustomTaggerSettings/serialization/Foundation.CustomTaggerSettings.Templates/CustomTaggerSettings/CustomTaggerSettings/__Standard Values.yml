@@ -2,7 +2,7 @@
 ID: "29278960-72dd-4d14-adeb-7ab80ceedb04"
 Parent: "07e95c3d-2bb4-469d-9d3b-7add9731cbd7"
 Template: "07e95c3d-2bb4-469d-9d3b-7add9731cbd7"
-Path: /sitecore/templates/Foundation/CustomTagger/CustomTaggerSettings/__Standard Values
+Path: /sitecore/templates/Foundation/CustomTaggerSettings/CustomTaggerSettings/__Standard Values
 DB: master
 Languages:
 - Language: en

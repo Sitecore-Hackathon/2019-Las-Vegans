@@ -1,19 +1,20 @@
 ﻿---
-ID: "5a4de458-e557-4de1-b185-fc5ef282e3c8"
+ID: "6d18469e-2395-4735-8eb1-84c06e3cdcca"
 Parent: "2642e1e5-6cb9-47ce-aa3c-84bfd5c3636f"
 Template: "455a3e98-a627-4b40-8035-e683a0331ac7"
-Path: /sitecore/templates/Foundation/CustomTagger/CustomTaggerSettings/Data/TagEntryTemplate
+Path: /sitecore/templates/Foundation/CustomTaggerSettings/CustomTaggerSettings/Data/TagValueField
 DB: master
 SharedFields:
 - ID: "1eb8ae32-e190-44a6-968d-ed904c794ebf"
   Hint: Source
-  Value: /sitecore/templates
+  Value: |
+    @dependentupon["TagEntryTemplate"]
 - ID: "ab162cc0-dc80-4abf-8871-998ee5d7ba32"
   Hint: Type
-  Value: Treelist
+  Value: Droptree
 - ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
   Hint: __Sortorder
-  Value: 200
+  Value: 300
 Languages:
 - Language: en
   Versions:

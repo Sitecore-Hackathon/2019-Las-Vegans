@@ -1,8 +1,4 @@
 ﻿using Sitecore.Pipelines.GetLookupSourceItems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace LV.Foundation.AI.CustomCortexTagger.Settings.Processors
 {

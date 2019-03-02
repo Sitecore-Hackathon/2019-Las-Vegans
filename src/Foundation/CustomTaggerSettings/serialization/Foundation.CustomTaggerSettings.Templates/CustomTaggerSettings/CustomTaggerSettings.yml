@@ -2,7 +2,7 @@
 ID: "07e95c3d-2bb4-469d-9d3b-7add9731cbd7"
 Parent: "fb2ff998-7e53-41b2-9135-0c6986a857ab"
 Template: "ab86861a-6030-46c5-b394-e8f99e8b87db"
-Path: /sitecore/templates/Foundation/CustomTagger/CustomTaggerSettings
+Path: /sitecore/templates/Foundation/CustomTaggerSettings/CustomTaggerSettings
 DB: master
 SharedFields:
 - ID: "12c33f3f-86c5-43a5-aeb4-5598cec45116"
