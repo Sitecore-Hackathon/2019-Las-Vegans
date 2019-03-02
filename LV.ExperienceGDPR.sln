@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feature", "Feature", "{17DD5718-6E13-4F2C-9738-B410396D4552}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Foundation", "Foundation", "{4FDA1DCD-D33E-447E-91C1-F4AE818E2CF0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{15D97D61-D597-42EC-B7E9-E9EC8130E630}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{ADCA10F7-A1D2-407B-8074-60418168C02E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		nuget.config = nuget.config
+		publishsettings.targets = publishsettings.targets
+		README.md = README.md
+		src\Foundation\Serialization\code\App_Config\Include\Foundation\zz.LV.Foundation.Serialization.Settings.config = src\Foundation\Serialization\code\App_Config\Include\Foundation\zz.LV.Foundation.Serialization.Settings.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{DAFED8F5-6CBD-4384-AAD6-DC3BCCF24911}"
+	ProjectSection(SolutionItems) = preProject
+		documentation\README.md = documentation\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{D27C83D2-2EAF-4E44-A1ED-2B3C2EBB5854}"
+	ProjectSection(SolutionItems) = preProject
+		documentation\images\deal-with-it.gif = documentation\images\deal-with-it.gif
+		documentation\images\hackathon.png = documentation\images\hackathon.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Component", "Component", "{D1C69EB9-A71D-4D51-93AF-F51DA0F49C58}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serialization", "Serialization", "{419E0D89-A2B5-43F5-B715-4EEC11C0CF8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{4AB785EB-8F32-4FC5-8255-A5D0FD362964}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.DependencyInjection", "src\Foundation\DependencyInjection\code\LV.Foundation.DependencyInjection.csproj", "{366148B7-2392-4F42-80D6-786B7A3682AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.Serialization", "src\Foundation\Serialization\code\LV.Foundation.Serialization.csproj", "{007CD5DC-0030-460D-91A3-3DDEA9AB472F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Feature.Component", "src\Feature\Component\code\LV.Feature.Component.csproj", "{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{366148B7-2392-4F42-80D6-786B7A3682AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{366148B7-2392-4F42-80D6-786B7A3682AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{366148B7-2392-4F42-80D6-786B7A3682AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{366148B7-2392-4F42-80D6-786B7A3682AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{007CD5DC-0030-460D-91A3-3DDEA9AB472F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{007CD5DC-0030-460D-91A3-3DDEA9AB472F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{007CD5DC-0030-460D-91A3-3DDEA9AB472F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{007CD5DC-0030-460D-91A3-3DDEA9AB472F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D27C83D2-2EAF-4E44-A1ED-2B3C2EBB5854} = {DAFED8F5-6CBD-4384-AAD6-DC3BCCF24911}
+		{D1C69EB9-A71D-4D51-93AF-F51DA0F49C58} = {17DD5718-6E13-4F2C-9738-B410396D4552}
+		{419E0D89-A2B5-43F5-B715-4EEC11C0CF8B} = {4FDA1DCD-D33E-447E-91C1-F4AE818E2CF0}
+		{4AB785EB-8F32-4FC5-8255-A5D0FD362964} = {4FDA1DCD-D33E-447E-91C1-F4AE818E2CF0}
+		{366148B7-2392-4F42-80D6-786B7A3682AE} = {4AB785EB-8F32-4FC5-8255-A5D0FD362964}
+		{007CD5DC-0030-460D-91A3-3DDEA9AB472F} = {419E0D89-A2B5-43F5-B715-4EEC11C0CF8B}
+		{FA3D4B43-28E6-48E8-9FAC-41EC61F01860} = {D1C69EB9-A71D-4D51-93AF-F51DA0F49C58}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {311DA37D-528B-43B2-A99B-E7253F841D46}
+	EndGlobalSection
+EndGlobal
