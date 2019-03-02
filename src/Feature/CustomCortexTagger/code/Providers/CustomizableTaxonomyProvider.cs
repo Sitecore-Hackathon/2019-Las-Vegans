@@ -1,5 +1,7 @@
 ﻿using LV.Foundation.AI.CustomCortexTagger.Settings.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Sitecore.ContentSearch;
+using Sitecore.ContentSearch.SearchTypes;
 using Sitecore.ContentTagging.Core.Comparers;
 using Sitecore.ContentTagging.Core.Models;
 using Sitecore.ContentTagging.Core.Providers;
@@ -63,17 +65,27 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                     return null;
                 }
 
-                List<Tag> tagList = new List<Tag>();
-                foreach (TagData data in tagData.Distinct(new TagNameComparer()))
+                ID tagFieldEntry = new ID(tagsSettingsModel.TagEntryValueField);
+                if (tagFieldEntry == ID.Null || tagFieldEntry == ID.Undefined)
                 {
-                    PrepareNewTag(template, tagsRepositoryRootItem, tagList, data);
+                    return null;
                 }
-                return tagList;
+
+                bool hasTemplateItem = template.Fields.Select(x => x.ID).Contains(tagFieldEntry);
+                if (hasTemplateItem)
+                {
+                    List<Tag> tagList = new List<Tag>();
+                    foreach (TagData data in tagData.Distinct(new TagNameComparer()))
+                    {
+                        PrepareNewTag(template, tagsRepositoryRootItem, tagFieldEntry, tagList, data);
+                    }
+                    return tagList;
+                }
             }
             return null;
         }
 
-        private void PrepareNewTag(TemplateItem template, Item tagsRepositoryRootItem, List<Tag> tagList, TagData data)
+        private void PrepareNewTag(TemplateItem template, Item tagsRepositoryRootItem, ID tagFieldEntry, List<Tag> tagList, TagData data)
         {
             Tag tag1 = this.GetTag(data.TagName);
             if (tag1 != null)
@@ -82,7 +94,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
             }
             else
             {
-                ID tag2 = this.CreateTag(data, template, tagsRepositoryRootItem);
+                ID tag2 = this.CreateTag(data, template, tagsRepositoryRootItem, tagFieldEntry);
                 if (!(tag2 == (ID)null))
                 {
                     Tag tag3 = new Tag()
@@ -97,7 +109,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
             }
         }
 
-        protected virtual ID CreateTag(TagData data, TemplateItem template, Item tagsRepositoryRootItem)
+        protected virtual ID CreateTag(TagData data, TemplateItem template, Item tagsRepositoryRootItem, ID tagFieldEntry)
         {
             string name = ItemUtil.ProposeValidItemName(this.RemoveDiacritics(data.TagName), "tag");
             using (new SecurityDisabler())
@@ -107,17 +119,28 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                 {
                     tagItem.Editing.BeginEdit();
                     tagItem.Fields["__Display Name"].Value = data.TagName;
+                    tagItem.Fields[tagFieldEntry].Value = data.TagName;
                     tagItem.Editing.EndEdit();
                 }
                 return tagItem.ID;
             }
         }
 
-        public Tag GetTag(string tagId)
+        public Tag GetTag(string tagName)
         {
-            // receive tag from repository based on tagId here
-            Tag tag = null;
-            return tag;
+            using (var context = ContentSearchManager.GetIndex($"sitecore_{Database.Name}_index").CreateSearchContext())
+            {
+                IQueryable<SearchResultItem> searchQuery = context
+                    .GetQueryable<SearchResultItem>()
+                    .Where(item => item.Name == ItemUtil.ProposeValidItemName(this.RemoveDiacritics(tagName), "tag"));
+
+                if(searchQuery.Any())
+                {
+                    return new Tag() { TagName = searchQuery.FirstOrDefault()?.Name } ;
+                }
+            }
+            
+            return null;
         }
 
         public Tag GetParent(string tagId)
