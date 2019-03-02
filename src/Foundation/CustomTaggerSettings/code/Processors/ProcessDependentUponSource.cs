@@ -5,6 +5,7 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Processors
     public class ProcessDependentUponSource
     {
         private const string DependentUponTag = "@dependentupon";
+        private const string TemplateFieldId = "{455A3E98-A627-4B40-8035-E683A0331AC7}";
 
         public void Process(GetLookupSourceItemsArgs args)
         {
@@ -34,7 +35,7 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Processors
                 return string.Empty;
             }
 
-            return string.Format($"query://*[@@id='{itemId}']");
+            return $"query://*[@@id='{itemId}']/*/*[@@templateid='{ProcessDependentUponSource.TemplateFieldId}']";
         }
     }
 }
