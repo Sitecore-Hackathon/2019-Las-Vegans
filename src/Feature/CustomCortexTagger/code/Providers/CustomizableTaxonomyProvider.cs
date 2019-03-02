@@ -6,11 +6,9 @@ using Sitecore.ContentTagging.Core.Comparers;
 using Sitecore.ContentTagging.Core.Models;
 using Sitecore.ContentTagging.Core.Providers;
 using Sitecore.Data;
-using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
 using Sitecore.DependencyInjection;
 using Sitecore.SecurityModel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,31 +19,9 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
     {
         private readonly ICustomTaggerSettingService _tagsSettingService;
 
-        /// <summary>Database</summary>
-        protected static Database Database
-        {
-            get
-            {
-                return Sitecore.Context.ContentDatabase ?? Sitecore.Context.Database;
-            }
-        }
+        protected static Database Database => Sitecore.Context.ContentDatabase ?? Sitecore.Context.Database;
 
-        /// <summary>Provider id</summary>
-        public string ProviderId
-        {
-            get
-            {
-                return nameof(DefaultTaxonomyProvider);
-            }
-        }
-
-        public ICustomTaggerSettingService TagsSettingsService
-        {
-            get
-            {
-                return _tagsSettingService;
-            }
-        }
+        public string ProviderId => nameof(DefaultTaxonomyProvider);
 
         public CustomizableTaxonomyProvider()
         {
@@ -54,71 +30,82 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         public IEnumerable<Tag> CreateTags(IEnumerable<TagData> tagData)
         {
-            var tagsSettingsModel = TagsSettingsService.GetCustomTaggerSettingModel();
+            return CreateTags(null, tagData);
+        }
 
-            TemplateItem template = new TemplateItem(Database.GetItem(new ID(tagsSettingsModel.TagEntryTemplate)));
-            if (template != null)
+        public IEnumerable<Tag> CreateTags(Item contentItem, IEnumerable<TagData> tagData)
+        {
+            var tagsSettingsModel = _tagsSettingService.GetCustomTaggerSettingModel();
+
+            var template = new TemplateItem(Database.GetItem(new ID(tagsSettingsModel.TagEntryTemplate)));
+            if (template == null)
             {
-                Item tagsRepositoryRootItem = Database.GetItem(new ID(tagsSettingsModel.TagsCollectionRootItem));
-                if (tagsRepositoryRootItem == null)
-                {
-                    return null;
-                }
-
-                ID tagFieldEntry = new ID(tagsSettingsModel.TagEntryValueField);
-                if (tagFieldEntry == ID.Null || tagFieldEntry == ID.Undefined)
-                {
-                    return null;
-                }
-
-                bool hasTemplateItem = template.Fields.Select(x => x.ID).Contains(tagFieldEntry);
-                if (hasTemplateItem)
-                {
-                    List<Tag> tagList = new List<Tag>();
-                    foreach (TagData data in tagData.Distinct(new TagNameComparer()))
-                    {
-                        PrepareNewTag(template, tagsRepositoryRootItem, tagFieldEntry, tagList, data);
-                    }
-                    return tagList;
-                }
+                Sitecore.Diagnostics.Log.Warn($"CustomTagger: template item with ID {tagsSettingsModel.TagEntryTemplate} for tags not found", this);
+                return null;
             }
-            return null;
+
+            var tagsRepositoryRootItem = Database.GetItem(new ID(tagsSettingsModel.TagsCollectionRootItem));
+            if (tagsRepositoryRootItem == null)
+            {
+                Sitecore.Diagnostics.Log.Warn($"CustomTagger: tags root item with ID {tagsSettingsModel.TagsCollectionRootItem} not found", this);
+                return null;
+            }
+
+            var tagFieldEntry = new ID(tagsSettingsModel.TagEntryValueField);
+            if (tagFieldEntry == ID.Null || tagFieldEntry == ID.Undefined)
+            {
+                Sitecore.Diagnostics.Log.Warn($"CustomTagger: tag field with ID {tagsSettingsModel.TagsCollectionRootItem} not found", this);
+                return null;
+            }
+
+            if (template.Fields.Select(x => x.ID).Contains(tagFieldEntry))
+            {
+                List<Tag> tagList = new List<Tag>();
+                foreach (TagData data in tagData.Distinct(new TagNameComparer()))
+                {
+                    PrepareNewTag(template, tagsRepositoryRootItem, tagFieldEntry, tagList, data);
+                }
+                return tagList;
+            }
+            else
+            {
+                Sitecore.Diagnostics.Log.Warn($"CustomTagger: template {tagsSettingsModel.TagEntryTemplate} doesn't contain field with ID {tagsSettingsModel.TagsCollectionRootItem}", this);
+                return null;
+            }
         }
 
         private void PrepareNewTag(TemplateItem template, Item tagsRepositoryRootItem, ID tagFieldEntry, List<Tag> tagList, TagData data)
         {
-            Tag tag1 = this.GetTag(data.TagName);
-            if (tag1 != null)
+            var existingTag = GetTag(data.TagName);
+            if (existingTag != null)
             {
-                tagList.Add(tag1);
+                tagList.Add(existingTag);
+                return;
             }
-            else
+            var newTagId = CreateTag(data, template, tagsRepositoryRootItem, tagFieldEntry);
+            if (newTagId != (ID)null)
             {
-                ID tag2 = this.CreateTag(data, template, tagsRepositoryRootItem, tagFieldEntry);
-                if (!(tag2 == (ID)null))
+                var tag = new Tag()
                 {
-                    Tag tag3 = new Tag()
-                    {
-                        TagName = data.TagName,
-                        ID = tag2.ToString(),
-                        TaxonomyProviderId = this.ProviderId,
-                        Data = data
-                    };
-                    tagList.Add(tag3);
-                }
+                    TagName = data.TagName,
+                    ID = newTagId.ToString(),
+                    TaxonomyProviderId = ProviderId,
+                    Data = data
+                };
+                tagList.Add(tag);
             }
         }
 
         protected virtual ID CreateTag(TagData data, TemplateItem template, Item tagsRepositoryRootItem, ID tagFieldEntry)
         {
-            string name = ItemUtil.ProposeValidItemName(this.RemoveDiacritics(data.TagName), "tag");
+            string name = ItemUtil.ProposeValidItemName(RemoveDiacritics(data.TagName), "tag");
             using (new SecurityDisabler())
             {
-                Item tagItem = tagsRepositoryRootItem.Add(name, template);
+                var tagItem = tagsRepositoryRootItem.Add(name, template);
                 if (name != data.TagName)
                 {
                     tagItem.Editing.BeginEdit();
-                    tagItem.Fields["__Display Name"].Value = data.TagName;
+                    tagItem.Fields[Sitecore.FieldIDs.DisplayName].Value = data.TagName;
                     tagItem.Fields[tagFieldEntry].Value = data.TagName;
                     tagItem.Editing.EndEdit();
                 }
@@ -130,9 +117,9 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
         {
             using (var context = ContentSearchManager.GetIndex($"sitecore_{Database.Name}_index").CreateSearchContext())
             {
-                IQueryable<SearchResultItem> searchQuery = context
+                var searchQuery = context
                     .GetQueryable<SearchResultItem>()
-                    .Where(item => item.Name == ItemUtil.ProposeValidItemName(this.RemoveDiacritics(tagName), "tag"));
+                    .Where(item => item.Name == ItemUtil.ProposeValidItemName(RemoveDiacritics(tagName), "tag"));
 
                 if(searchQuery.Any())
                 {
