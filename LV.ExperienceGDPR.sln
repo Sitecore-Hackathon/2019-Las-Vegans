@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.DependencyInj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.Serialization", "src\Foundation\Serialization\code\LV.Foundation.Serialization.csproj", "{007CD5DC-0030-460D-91A3-3DDEA9AB472F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Feature.Component", "src\Feature\Component\code\LV.Feature.Component.csproj", "{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Feature.GDPR.Operations", "src\Feature\Component\code\LV.Feature.GDPR.Operations.csproj", "{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

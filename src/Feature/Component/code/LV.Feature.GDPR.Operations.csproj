@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LV.Feature.Component</RootNamespace>
-    <AssemblyName>LV.Feature.Component</AssemblyName>
+    <RootNamespace>LV.Feature.GDPR.Operations</RootNamespace>
+    <AssemblyName>LV.Feature.GDPR.Operations</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -75,8 +75,6 @@
   <ItemGroup>
     <Content Include="App_Config\Include\Feature\LV.Feature.Component.Serialization.config" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
-    <None Include="Views\Web.config" />
-    <Content Include="Views\Component\ScComponentView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -88,13 +86,12 @@
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ComponentController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Foundation\DependencyInjection\code\LV.Foundation.DependencyInjection.csproj">
       <Project>{366148b7-2392-4f42-80d6-786b7a3682ae}</Project>
-      <Name>Sitecore.Foundation.DependencyInjection</Name>
+      <Name>LV.Foundation.DependencyInjection</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
