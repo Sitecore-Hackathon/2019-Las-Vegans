@@ -13,6 +13,8 @@
 
 LasVegans team would like to present to you Customizable Content Tagging module.
 
+Module allows Content Authors to use buil-in [Sitecore Cortex Content Tagging](https://doc.sitecore.com/users/91/sitecore-experience-platform/en/tag-content-using-sitecore-cortex-content-tagging.html) feature with custom tags root item(s) and custom tag items structure.
+
 [Youtube Presentation Movie](https://www.youtube.com/todo)
 
 ----------
@@ -27,31 +29,40 @@ By default module uses same the configuration defined in `/sitecore/system/Modul
 
 To define different configurations for mutlisite solutions, where e.g. tags are defined in different root items, add more `CustomTaggerSettings` items and define site to settings mapping in configuration file:
 
-    <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
-    <sitecore role:require="Standalone or ContentManagement">
-        <customTagger type="LV.Foundation.AI.CustomCortexTagger.Settings.Models.CustomTaggerSitesMappingsModel, LV.Foundation.AI.CustomCortexTagger.Settings">
-            <sitesMappings hint="raw:AddCustomTaggerSitesMappings">
-                <site name="website1" settingsItemPath="/sitecore/system/Modules/CustomTaggerSettings1"/>
-                <site name="website2" settingsItemPath="/sitecore/system/Modules/CustomTaggerSettings2"/>
-            </sitesMappings>
-        </customTagger>
-    </sitecore>
-    </configuration>
+```xml
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+<sitecore role:require="Standalone or ContentManagement">
+    <customTagger type="LV.Foundation.AI.CustomCortexTagger.Settings.Models.CustomTaggerSitesMappingsModel, LV.Foundation.AI.CustomCortexTagger.Settings">
+        <sitesMappings hint="raw:AddCustomTaggerSitesMappings">
+            <site name="website1" settingsItemPath="/sitecore/system/Modules/CustomTaggerSettings1"/>
+            <site name="website2" settingsItemPath="/sitecore/system/Modules/CustomTaggerSettings2"/>
+        </sitesMappings>
+    </customTagger>
+</sitecore>
+</configuration>
+```
+
+# Sample Configation for SXA
+
+Sitecore SXA has its own Content Tags structure, to configure the module to work with SXA, create `CustomTaggerSettings` with following settings:
+![SXA Config](Documentation/images/sxa-usage.png?raw=true "SXA Config")
 
 # Installation
 
 To use the module you will need to:
 - Install [Sitecore 9.1 (Initial Release)](https://dev.sitecore.net/Downloads/Sitecore_Experience_Platform/91/Sitecore_Experience_Platform_91_Initial_Release.aspx)
 - Configure content tagging provider. For example for [Open Calais](http://www.opencalais.com/) create new config file in `{sitecore website root}\App_Config\Environment\Sitecore.ContentTagging.OpenCalais.config` with following content:
-                                         
-		   <?xml version="1.0" encoding="utf-8" ?>
-           <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
-               <sitecore role:require="Standalone or ContentManagement">
-                   <settings>
-                       <setting name="Sitecore.ContentTagging.OpenCalais.CalaisAccessToken" value="{your-token-value}" />
-                   </settings>
-               </sitecore>
-           </configuration>
+
+```xml                                         
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+    <sitecore role:require="Standalone or ContentManagement">
+        <settings>
+            <setting name="Sitecore.ContentTagging.OpenCalais.CalaisAccessToken" value="{your-token-value}" />
+        </settings>
+    </sitecore>
+</configuration>
+```
 
 - Install [LV.CustomizableTagger.zip](sc.package/LV.CustomizableTagger.zip) package using Sitecore Installation Wizard.
 
