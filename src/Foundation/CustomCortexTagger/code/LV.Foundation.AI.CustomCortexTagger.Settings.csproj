@@ -91,6 +91,7 @@
     <Compile Include="Processors\ProcessDependentUponSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CustomTaggerSettingService.cs" />
+    <Compile Include="Services\ICustomTaggerSettingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DependencyInjection\code\LV.Foundation.DependencyInjection.csproj">

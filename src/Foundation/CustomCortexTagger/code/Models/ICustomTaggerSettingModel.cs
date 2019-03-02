@@ -4,12 +4,12 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Models
 {
     public interface ICustomTaggerSettingModel
     {
-        Guid TagsCollectionRootItem { get; set; }
+        Guid TagsCollectionRootItem { get; }
 
-        Guid TagEntryTemplate { get; set; }
+        Guid TagEntryTemplate { get; }
 
-        Guid TagValueField { get; set; }
+        Guid TagEntryValueField { get; }
 
-        Guid TagsFieldTarget { get; set; }
+        Guid TagsFieldTarget { get; }
     }
 }
