@@ -29,6 +29,7 @@ Afterwards your content authors can use built-in "Tag Item" command from ribbon.
 ## Multisite Usage
 
 By default module uses same the configuration defined in `/sitecore/system/Modules/CustomTaggerSettings` item for all sites.
+![SXA Config](documentation/images/configure-customtags.gif)
 
 To define different configurations for mutlisite solutions, where e.g. tags are defined in different root items, add more `CustomTaggerSettings` items and define site to settings mapping in configuration file:
 
