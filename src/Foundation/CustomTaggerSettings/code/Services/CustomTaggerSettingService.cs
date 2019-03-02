@@ -1,18 +1,16 @@
 ﻿using LV.Foundation.AI.CustomCortexTagger.Settings.Models;
 using Sitecore.Data.Items;
 using Sitecore.Data;
+using System.Linq;
 
 namespace LV.Foundation.AI.CustomCortexTagger.Settings.Services
 {
     public class CustomTaggerSettingService : ICustomTaggerSettingService
     {
-        //TODO: change to multi-site solution
-        private readonly ID CustomTaggerSettingsItemId = new ID("{82239F2F-D096-4DB4-A6B5-776B210D47F9}");
-        private readonly Item CustomTaggerSettingsItem;
+        private readonly ID DefaultCustomTaggerSettingsItemId = new ID("{82239F2F-D096-4DB4-A6B5-776B210D47F9}");
 
         public CustomTaggerSettingService()
         {
-            this.CustomTaggerSettingsItem = this.Database.GetItem(this.CustomTaggerSettingsItemId);
         }
 
         private Database Database
@@ -23,11 +21,28 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Services
             }
         }
 
-        public ICustomTaggerSettingModel GetCustomTaggerSettingModel()
+        public ICustomTaggerSettingModel GetCustomTaggerSettingModel(string siteName)
         {
-            var result = new CustomTaggerSettingModel(this.CustomTaggerSettingsItem);
+            Item customTaggerSettingsItem = null;
 
-            return result;
+            if (!string.IsNullOrWhiteSpace(siteName))
+            {
+                var xmlNode = Sitecore.Configuration.Factory.GetConfigNode("customTagger");
+                var sitesMappings = Sitecore.Configuration.Factory.CreateObject<ICustomTaggerSitesMappingsModel>(xmlNode);
+                var site = sitesMappings.CustomTaggerSitesMappings.FirstOrDefault(m => m.Name.Equals(siteName));
+
+                if (site != null && !string.IsNullOrWhiteSpace(site.SettingsItemPath))
+                {
+                    customTaggerSettingsItem = this.Database.GetItem(site.SettingsItemPath);
+                }
+            }
+
+            if (customTaggerSettingsItem == null)
+            {
+                customTaggerSettingsItem = this.Database.GetItem(this.DefaultCustomTaggerSettingsItemId);
+            }
+
+            return new CustomTaggerSettingModel(customTaggerSettingsItem);
         }
     }
 }

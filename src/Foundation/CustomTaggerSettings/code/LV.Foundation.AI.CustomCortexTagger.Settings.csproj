@@ -71,7 +71,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Config\Include\Foundation\LV.Foundation.AI.CustomCortexTagger.Settings.config" />
+    <Content Include="App_Config\Include\Foundation\LV.Foundation.AI.CustomCortexTagger.Settings.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Config\Include\Foundation\LV.Foundation.AI.CustomCortexTagger.Settings.Serialization.config">
       <SubType>Designer</SubType>
     </Content>
@@ -87,6 +89,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\CustomTaggerSettingModel.cs" />
+    <Compile Include="Models\CustomTaggerSiteMappingModel.cs" />
+    <Compile Include="Models\ICustomTaggerSiteMappingModel.cs" />
+    <Compile Include="Models\ICustomTaggerSitesMappingsModel.cs" />
+    <Compile Include="Models\CustomTaggerSitesMappingsModel.cs" />
     <Compile Include="Models\ICustomTaggerSettingModel.cs" />
     <Compile Include="Processors\ProcessDependentUponSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

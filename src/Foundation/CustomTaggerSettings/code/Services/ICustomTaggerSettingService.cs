@@ -4,6 +4,6 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Services
 {
     public interface ICustomTaggerSettingService
     {
-        ICustomTaggerSettingModel GetCustomTaggerSettingModel();
+        ICustomTaggerSettingModel GetCustomTaggerSettingModel(string siteName);
     }
 }

@@ -24,8 +24,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         public void TagContent(Item contentItem, IEnumerable<Tag> tags)
         {
-            var tagsFieldId = _settingsService.GetCustomTaggerSettingModel().TagsFieldTarget;
-
+            var tagsFieldId = _settingsService.GetCustomTaggerSettingModel("website").TagsFieldTarget;
             if (tagsFieldId == Guid.Empty)
             {
                 Log.Warn("CustomTagger: Tags field name not defined in settings", this);

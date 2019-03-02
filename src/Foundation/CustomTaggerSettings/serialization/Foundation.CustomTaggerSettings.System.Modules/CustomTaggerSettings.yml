@@ -1,7 +1,7 @@
 ﻿---
-ID: "0cafb270-83eb-4029-8e61-abdd5e774545"
+ID: "82239f2f-d096-4db4-a6b5-776b210d47f9"
 Parent: "08477468-d438-43d4-9d6a-6d84a611971c"
-Template: "a87a00b1-e6db-45ab-8b54-636fec3b5523"
+Template: "07e95c3d-2bb4-469d-9d3b-7add9731cbd7"
 Path: /sitecore/system/Modules/CustomTaggerSettings
 DB: master
 Languages:
@@ -10,5 +10,7 @@ Languages:
   - Version: 1
     Fields:
     - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
-      Hint: __Created
-      Value: 20190302T163518Z
+      Value: "20190302T182536:636871479361066214Z"
+    - ID: "eecfd4d2-d64c-4214-8150-cfe9c491d779"
+      Hint: TagsCollectionRootItem
+      Value: "{D1D56B5C-A232-4DE7-AB6B-9D248464D0EC}"
