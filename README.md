@@ -13,7 +13,9 @@
 
 LasVegans team would like to present to you Customizable Content Tagging module.
 
-Module allows Content Authors to use buil-in [Sitecore Cortex Content Tagging](https://doc.sitecore.com/users/91/sitecore-experience-platform/en/tag-content-using-sitecore-cortex-content-tagging.html) feature with custom tags root item(s) and custom tag items structure.
+Module allows Content Authors to use buil-in [Sitecore Cortex Content Tagging](https://doc.sitecore.com/users/91/sitecore-experience-platform/en/tag-content-using-sitecore-cortex-content-tagging.html) feature with custom tags root item(s) and custom tag items structure. This gives more flexibility, cause by default content tagging applies tags to items in standard _Semantics field and stores the tags in item buckets, which are not easy to manage or reuse. 
+
+Module is flexible and works with different tags structure, including custom or SXA. 
 
 [Youtube Presentation Movie](https://www.youtube.com/todo)
 
@@ -22,6 +24,7 @@ Module allows Content Authors to use buil-in [Sitecore Cortex Content Tagging](h
 # Basic Usage
 
 After the installation you need to configure the module by selecting your custom taxonomy structure in the fields in `/sitecore/system/Modules/CustomTaggerSettings` item:
+![SXA Config](documentation/images/configure-customtags.gif)
 
 Afterwards your content authors can use built-in "Tag Item" command from ribbon. New tags will appear in configured, content tags root item and they will by automatically applied to the selected content item:
 
@@ -29,7 +32,6 @@ Afterwards your content authors can use built-in "Tag Item" command from ribbon.
 ## Multisite Usage
 
 By default module uses same the configuration defined in `/sitecore/system/Modules/CustomTaggerSettings` item for all sites.
-![SXA Config](documentation/images/configure-customtags.gif)
 
 To define different configurations for mutlisite solutions, where e.g. tags are defined in different root items, add more `CustomTaggerSettings` items and define site to settings mapping in configuration file:
 
