@@ -14,7 +14,7 @@ namespace LV.Foundation.AI.CustomCortexTagger.Settings.Services
 
         public CustomTaggerSettingService()
         {
-            this.CustomTaggerSettingsItem = Sitecore.Context.Database.GetItem(this.CustomTaggerSettingsItemId);
+            this.CustomTaggerSettingsItem = Sitecore.Context.ContentDatabase.GetItem(this.CustomTaggerSettingsItemId);
         }
 
         public ICustomTaggerSettingModel GetCustomTaggerSettingModel()
