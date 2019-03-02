@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{D27C83
 		documentation\images\hackathon.png = documentation\images\hackathon.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Component", "Component", "{D1C69EB9-A71D-4D51-93AF-F51DA0F49C58}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomTagger", "CustomTagger", "{D1C69EB9-A71D-4D51-93AF-F51DA0F49C58}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serialization", "Serialization", "{419E0D89-A2B5-43F5-B715-4EEC11C0CF8B}"
 EndProject
@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.DependencyInj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Foundation.Serialization", "src\Foundation\Serialization\code\LV.Foundation.Serialization.csproj", "{007CD5DC-0030-460D-91A3-3DDEA9AB472F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Feature.GDPR.Operations", "src\Feature\Component\code\LV.Feature.GDPR.Operations.csproj", "{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LV.Feature.AI.CustomCortexTagger", "src\Feature\CustomCortexTagger\code\LV.Feature.AI.CustomCortexTagger.csproj", "{FA3D4B43-28E6-48E8-9FAC-41EC61F01860}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomTagger", "CustomTagger", "{38FA3A42-A257-483E-9F12-CC05BE773CB9}"
 EndProject

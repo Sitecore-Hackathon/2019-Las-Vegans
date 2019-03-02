@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LV.Feature.GDPR.Operations</RootNamespace>
-    <AssemblyName>LV.Feature.GDPR.Operations</AssemblyName>
+    <RootNamespace>LV.Feature.AI.CustomCortexTagger</RootNamespace>
+    <AssemblyName>LV.Feature.AI.CustomCortexTagger</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -52,7 +52,8 @@
     <PackageReference Include="Microsoft.Net.Compilers" Version="2.6.1" />
     <PackageReference Include="Microsoft.Web.Infrastructure" Version="1.0.0.0" />
     <PackageReference Include="Sitecore.Kernel" Version="[12.0.0]" />
-    <PackageReference Include="Sitecore.Mvc" Version="[3.0.0]" />
+    <PackageReference Include="Sitecore.ContentTagging.Core" Version="[1.1.0]" />
+    <PackageReference Include="Sitecore.ContentTagging" Version="[1.1.0]" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -73,7 +74,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Config\Include\Feature\LV.Feature.Component.Serialization.config" />
+    <Content Include="App_Config\Include\Feature\LV.Feature.AI.CustomCortexTagger.config" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -87,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\CustomizableTagger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Foundation\DependencyInjection\code\LV.Foundation.DependencyInjection.csproj">
@@ -96,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Pipelines\Processors\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
