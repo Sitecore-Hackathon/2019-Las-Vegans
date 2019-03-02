@@ -94,12 +94,6 @@
     <Compile Include="Services\CustomTaggerSettingService.cs" />
     <Compile Include="Services\ICustomTaggerSettingService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\DependencyInjection\code\LV.Foundation.DependencyInjection.csproj">
-      <Project>{366148b7-2392-4f42-80d6-786b7a3682ae}</Project>
-      <Name>LV.Foundation.DependencyInjection</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

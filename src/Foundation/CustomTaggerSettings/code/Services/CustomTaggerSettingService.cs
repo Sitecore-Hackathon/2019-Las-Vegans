@@ -1,11 +1,9 @@
 ﻿using LV.Foundation.AI.CustomCortexTagger.Settings.Models;
-using LV.Foundation.DependencyInjection;
 using Sitecore.Data.Items;
 using Sitecore.Data;
 
 namespace LV.Foundation.AI.CustomCortexTagger.Settings.Services
 {
-    [Service]
     public class CustomTaggerSettingService : ICustomTaggerSettingService
     {
         //TODO: change to multi-site solution
