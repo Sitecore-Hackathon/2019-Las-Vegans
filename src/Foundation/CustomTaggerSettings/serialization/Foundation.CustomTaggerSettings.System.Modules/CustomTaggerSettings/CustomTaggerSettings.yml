@@ -1,0 +1,17 @@
+﻿---
+ID: "82239f2f-d096-4db4-a6b5-776b210d47f9"
+Parent: "0cafb270-83eb-4029-8e61-abdd5e774545"
+Template: "07e95c3d-2bb4-469d-9d3b-7add9731cbd7"
+Path: /sitecore/system/Modules/CustomTaggerSettings/CustomTaggerSettings
+DB: master
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20190302T112111Z
+    - ID: "5a4de458-e557-4de1-b185-fc5ef282e3c8"
+      Hint: TagEntryTemplate
+      Value: "{07E95C3D-2BB4-469D-9D3B-7ADD9731CBD7}"
