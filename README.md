@@ -17,7 +17,7 @@ Module allows Content Authors to use buil-in [Sitecore Cortex Content Tagging](h
 
 Module is flexible and works with different tags structure, including custom or SXA. 
 
-[Youtube Presentation Movie](https://www.youtube.com/todo)
+[Youtube Presentation Movie](https://youtu.be/h-va43TT4No)
 
 ----------
 
