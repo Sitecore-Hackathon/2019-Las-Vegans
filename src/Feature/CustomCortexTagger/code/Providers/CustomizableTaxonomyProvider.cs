@@ -1,5 +1,6 @@
 ﻿using LV.Foundation.AI.CustomCortexTagger.Settings.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using Sitecore.ContentSearch;
 using Sitecore.ContentSearch.SearchTypes;
 using Sitecore.ContentTagging.Core.Comparers;
@@ -21,6 +22,9 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         protected static Database Database => Sitecore.Context.ContentDatabase ?? Sitecore.Context.Database;
 
+        private const string PropertyKey = "JToken";
+        private const string PropertyValueKey = "_typeGroup";
+
         public string ProviderId => nameof(DefaultTaxonomyProvider);
 
         public CustomizableTaxonomyProvider()
@@ -35,17 +39,8 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         public IEnumerable<Tag> CreateTags(Item contentItem, IEnumerable<TagData> tagData)
         {
-            var tagsCategories = tagData.SelectMany(x => x.Properties.Where(y => y.Key == "_typeGroup" && y.Value != null).Select(z => z.Value as string).Distinct());
-            
-            if (tagsCategories == null || !tagsCategories.Any())
-            {
-                Sitecore.Diagnostics.Log.Warn($"CustomizableTaxonomyProvider: Tags categories are null or empty", this);
-                return new List<Tag>();
-            }
-
             var tagsSettingsModel = _tagsSettingService.GetCustomTaggerSettingModel(contentItem);
-
-
+            
             var categoryTemplate = new TemplateItem(Database.GetItem(new ID(tagsSettingsModel.TagCategoryTemplate)));
             if (categoryTemplate == null)
             {
@@ -73,27 +68,89 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                 Sitecore.Diagnostics.Log.Warn($"CustomizableTaxonomyProvider: tag field with ID {tagsSettingsModel.TagsCollectionRootItem} not found", this);
                 return new List<Tag>();
             }
+            
+            //var tagsWithCategories = new List<TagData>();
+            var tagsWithoutCategories = new List<TagData>();
+            var tagsCategories = new Dictionary<string, List<TagData>>();
+
+            foreach (var tag in tagData)
+            {
+                if (!tag.Properties.Any(p =>
+                    {
+                        if (p.Key != CustomizableTaxonomyProvider.PropertyKey || p.Value == null)
+                        {
+                            return false;
+                        }
+                        
+                        var jObject = p.Value as JObject;
+                        if (jObject == null)
+                        {
+                            return false;
+                        }
+
+                        if (!jObject.ContainsKey(CustomizableTaxonomyProvider.PropertyValueKey))
+                        {
+                            return false;
+                        }
+
+                        var categoryName = jObject.GetValue(CustomizableTaxonomyProvider.PropertyValueKey);
+
+                        //var valueStart = jObject.IndexOf('"', startIndex + CustomizableTaxonomyProvider.PropertyValueKey.Length + 1) + 1;
+                        //if (valueStart < 0)
+                        //{
+                        //    return false;
+                        //}
+
+                        //jObject = jObject.Substring(valueStart + 1);
+
+                        //var valueEnd = jObject.IndexOf('"');
+                        //if (valueEnd < 0)
+                        //{
+                        //    return false;
+                        //}
+
+                        //jObject = jObject.Substring(0, valueEnd);
+                        //if (string.IsNullOrWhiteSpace(jObject))
+                        //{
+                        //    return false;
+                        //}
+
+                        if (!tagsCategories.ContainsKey(categoryName.ToString()))
+                        {
+                            tagsCategories.Add(categoryName.ToString(), new List<TagData>());
+                        }
+
+                        tagsCategories[categoryName.ToString()].Add(tag);
+
+                        return true;
+                    }
+                    ))
+                {
+                    tagsWithoutCategories.Add(tag);
+                }
+            }
 
             if (template.Fields.Select(x => x.ID).Contains(tagFieldEntry))
             {
                 List<Tag> tagList = new List<Tag>();
                 foreach (var tagCategory in tagsCategories)
-                {
-                    var tagsForCategory = tagData.Distinct(new TagNameComparer())
-                        .Where(x => x.Properties.Any(p => p.Key == "_typeGroup" && p.Value != null && p.Value as string == tagCategory));
-                    
-                    var categoryItem = PrepareNewCategory(tagCategory, tagsRepositoryRootItem, categoryTemplate);
+                {                    
+                    var categoryItem = PrepareNewCategory(tagCategory.Key, tagsRepositoryRootItem, categoryTemplate);
 
-                    foreach (var data in tagsForCategory)
+                    if (categoryItem != null)
                     {
-                        PrepareNewTag(template, tagFieldEntry, tagList, data, categoryItem);
+                        foreach (var data in tagCategory.Value)
+                        {
+                            PrepareNewTag(template, tagFieldEntry, tagList, data, categoryItem);
+                        }
+                    }
+                    else
+                    {
+                        tagsWithoutCategories.AddRange(tagCategory.Value);
                     }
                 }
 
-                var tagsWithoutCategory = tagData.Distinct(new TagNameComparer())
-                        .Where(x => x.Properties.All(p => (p.Key != "_typeGroup") || (p.Value == null || !tagsCategories.Contains(p.Value))));
-
-                foreach (var tagWithoutCategory in tagsWithoutCategory)
+                foreach (var tagWithoutCategory in tagsWithoutCategories)
                 {
                     PrepareNewTag(template, tagFieldEntry, tagList, tagWithoutCategory, tagsRepositoryRootItem);
                 }
@@ -109,18 +166,15 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
 
         private Item PrepareNewCategory(string categoryName, Item tagsRepositoryRootItem, TemplateItem categoryTemplate)
         {
-            var existingCategory = GetCategory(categoryName);
-            if (existingCategory != (ID)null)
+            var category = GetCategory(categoryName);
+            if (category == ID.Null)
             {
+                category = CreateCategory(categoryName, tagsRepositoryRootItem, categoryTemplate);
+            }
 
-
-                var newCategory = CreateCategory(categoryName, tagsRepositoryRootItem, categoryTemplate);
-
-                if (newCategory != (ID)null)
-                {
-                    var categoryItem = Database.GetItem(newCategory);
-                    return categoryItem;
-                }
+            if (category != ID.Null)
+            {
+                return Database.GetItem(category);
             }
 
             return null;
@@ -142,7 +196,8 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                     return categoryItem.ID;
                 }
             }
-            return null;
+
+            return ID.Null;
         }
 
         public ID GetCategory(string categoryName)
@@ -159,7 +214,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                 }
             }
             
-            return null;
+            return ID.Null;
         }
 
         private void PrepareNewTag(TemplateItem template, ID tagFieldEntry, List<Tag> tagList, TagData data, Item parentItem)
@@ -171,7 +226,7 @@ namespace LV.Feature.AI.CustomCortexTagger.Providers
                 return;
             }
             var newTagId = CreateTag(data, template, tagFieldEntry, parentItem);
-            if (newTagId != (ID)null)
+            if (newTagId != ID.Null)
             {
                 var tag = new Tag()
                 {
