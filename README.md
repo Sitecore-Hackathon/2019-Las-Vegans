@@ -27,7 +27,7 @@ After the installation you need to configure the module by selecting your custom
 ![SXA Config](documentation/images/configure-customtags.gif)
 
 Afterwards your content authors can use built-in "Tag Item" command from ribbon. New tags will appear in configured, content tags root item and they will by automatically applied to the selected content item:
-
+![SXA Config](documentation/images/use-customtags.gif)
 
 ## Multisite Usage
 
